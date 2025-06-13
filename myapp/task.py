@@ -1,8 +1,10 @@
+import json
 from time import sleep
 from celery import shared_task
 from mycelery.celery import app
 from datetime import timedelta
 from celery.schedules import crontab,solar
+from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
 # Create a Celery instance
 @shared_task(bind=True, name='myapp.tasks.add')
@@ -77,3 +79,24 @@ app.conf.beat_schedule = {
         'args': (16, 16),
     },
 }
+
+def clear_redis_cache(key):
+    """A task to clear the cache."""
+    print("Redis Cache cleared!", {'key': key})
+    return key
+
+def clear_rabbitmq_cache(key):
+    """A task to clear the cache."""
+    print("Rabbitmq Cache cleared!", {'key': key})
+    return key
+
+schedude,created =IntervalSchedule.objects.get_or_create(
+    every=10,
+    period=IntervalSchedule.SECONDS,
+)
+PeriodicTask.objects.create(
+    interval=schedude,
+    name='clear_redis_cache',
+    task='myapp.task.clear_redis_cache',
+    args=json.dumps([1]),
+)
