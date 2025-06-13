@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from mycelery.celery import add
 from myapp.task import sub 
+from celery.result import AsyncResult
+from django.shortcuts import redirect
 
 
 #     #enque task using delay
@@ -24,20 +26,22 @@ from myapp.task import sub
 #    #display the result of the task
 def home_view(request):
     result = add.delay(44, 6)
-    print('result 1:', result) 
-    return render(request, 'home.html', {'result': result})
+    return redirect('check_result', task_id=result.id)
+    
 
 def check_result(request, task_id):
-    from celery.result import AsyncResult
     result = AsyncResult(task_id)
-    
-    if result.ready():
-        return render(request, 'result.html', {'result': result.result})
-    else:
-        return render(request, 'result.html', {'result': 'Task is still processing.'})
-    
-    
 
+    context = {
+        'result': {
+            'id': task_id,
+            'status': result.status,
+            'result': result.result if result.ready() else 'Pending...',
+            'traceback': result.traceback,
+            'completed_at': '',
+        }
+    }
+    return render(request, 'result.html', context)
 # About Page View
 def about_view(request):
     result = sub.delay(33, 6) 
