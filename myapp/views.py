@@ -1,7 +1,11 @@
 from django.shortcuts import render
+from mycelery.celery import add
 
 # Home Page View
 def home_view(request):
+    # Example of using a Celery task
+    result = add(4, 6)  # Asynchronously add 4 and 6
+    # You can store the result in the session or database if needed
     return render(request, 'home.html')
 
 # About Page View
