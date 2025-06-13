@@ -36,6 +36,7 @@ def check_result(request, task_id):
     else:
         return render(request, 'result.html', {'result': 'Task is still processing.'})
     
+    
 
 # About Page View
 def about_view(request):

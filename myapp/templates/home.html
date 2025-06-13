@@ -96,8 +96,10 @@
     <div class="alert alert-info">
       <p><strong>Task ID:</strong> {{ result.id }}</p>
       <a class="btn btn-outline-primary btn-sm" href="{% url 'check_result' result.id %}">Check Result</a>
+
     </div>
   {% endif %}
+  {% include "result.html" %}
 </div>
 
 <!-- Bootstrap JS -->
