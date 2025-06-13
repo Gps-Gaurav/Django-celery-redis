@@ -136,3 +136,11 @@ CELERY_RESULT_EXTENDED = True
 #         'LOCATION': 'my_cache_table',
 #     }
 # }
+
+CELERY_BEAT_SCHEDULE = {
+    'clear_cache_every_10_seconds': {
+        'task': 'myapp.task.clear_cache',  # The task to run
+        'schedule': 10.0,  # Run every 10 seconds
+        'args': (1,)  # Example argument
+    },
+}

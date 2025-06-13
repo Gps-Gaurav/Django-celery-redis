@@ -40,7 +40,6 @@ def check_result(request, task_id):
             'traceback': task_result.traceback,
             'worker': task_result.worker,
             'created_at': task_result.date_created,
-            'started_at': task_result.date_started,
             'completed_at': task_result.date_done,
         }
     except TaskResult.DoesNotExist:
