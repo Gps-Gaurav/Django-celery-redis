@@ -93,19 +93,26 @@
 
 <!-- Celery Task Info Section -->
 <div class="container my-4">
- {# templates/result.html #}
-{% if result %}
-<div class="card shadow-sm my-4">
-  <div class="card-body">
-    <h5 class="card-title text-primary">Task Result</h5>
-    <p><strong>Task ID:</strong> {{ result.id }}</p>
-    <p><strong>Status:</strong> {{ result.status }}</p>
-    <p><strong>Traceback:</strong></p>
-    <pre class="bg-light p-3">{{ result.traceback }}</pre>
-    <p><strong>Result:</strong> {{ result.result }}</p>
+  {% if result %}
+  <div class="card shadow-sm my-4">
+    <div class="card-body">
+      <h5 class="card-title text-primary">Task Result</h5>
+      <p><strong>Task ID:</strong> {{ result.task_id }}</p>
+      <p><strong>Task Name:</strong> {{ result.task_name }}</p>
+      <p><strong>Status:</strong> {{ result.status }}</p>
+      <p><strong>Worker:</strong> {{ result.worker }}</p>
+      <p><strong>Created At:</strong> {{ result.created_at }}</p>
+      <p><strong>Started At:</strong> {{ result.started_at }}</p>
+      <p><strong>Completed At:</strong> {{ result.completed_at }}</p>
+      <p><strong>Traceback:</strong></p>
+      <pre class="bg-light p-3">{{ result.traceback }}</pre>
+      <p><strong>Result:</strong> {{ result.result }}</p>
+    </div>
   </div>
-</div>
-{% endif %}
+  {% else %}
+    <p>No task info found.</p>
+  {% endif %}
+  
 </div>
 
 <!-- Bootstrap JS -->

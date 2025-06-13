@@ -3,6 +3,7 @@ from mycelery.celery import add
 from myapp.task import sub 
 from celery.result import AsyncResult
 from django.shortcuts import redirect
+from django_celery_results.models import TaskResult
 
 
 #     #enque task using delay
@@ -28,20 +29,29 @@ def home_view(request):
     result = add.delay(44, 6)
     return redirect('check_result', task_id=result.id)
     
-
 def check_result(request, task_id):
-    result = AsyncResult(task_id)
-
-    context = {
-        'result': {
-            'id': task_id,
-            'status': result.status,
-            'result': result.result if result.ready() else 'Pending...',
-            'traceback': result.traceback,
-            'completed_at': '',
+    try:
+        task_result = TaskResult.objects.get(task_id=task_id)
+        context = {
+            'task_id': task_result.task_id,
+            'task_name': task_result.task_name,
+            'status': task_result.status,
+            'result': task_result.result,
+            'traceback': task_result.traceback,
+            'worker': task_result.worker,
+            'created_at': task_result.date_created,
+            'started_at': task_result.date_started,
+            'completed_at': task_result.date_done,
         }
-    }
-    return render(request, 'result.html', context)
+    except TaskResult.DoesNotExist:
+        context = {
+            'task_id': task_id,
+            'status': 'Pending',
+            'result': 'Task is still processing or not found.',
+        }
+
+    return render(request, 'result.html', {'result': context})
+
 # About Page View
 def about_view(request):
     result = sub.delay(33, 6) 
