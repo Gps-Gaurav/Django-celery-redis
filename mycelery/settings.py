@@ -137,10 +137,10 @@ CELERY_RESULT_EXTENDED = True
 #     }
 # }
 
-CELERY_BEAT_SCHEDULE = {
-    'clear_cache_every_10_seconds': {
-        'task': 'myapp.task.clear_cache',  # The task to run
-        'schedule': 10.0,  # Run every 10 seconds
-        'args': (1,)  # Example argument
-    },
-}
+# CELERY_BEAT_SCHEDULE = {
+#     'clear_cache_every_10_seconds': {
+#         'task': 'myapp.task.clear_cache',  # The task to run
+#         'schedule': 10.0,  # Run every 10 seconds
+#         'args': (1,)  # Example argument
+#     },
+# }
