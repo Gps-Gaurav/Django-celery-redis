@@ -18,7 +18,7 @@ app.autodiscover_tasks()
 
 @app.task
 def add(x, y):
-    sleep(15)  # Simulate a long-running task
+    sleep(5)  # Simulate a long-running task
     """Add two numbers."""
     return x + y
 
